@@ -1,7 +1,5 @@
 "use strict"
 
-// - merge sort
-// - quick sort
 // - how do we show the array? how do we show the sorting process?
 //   - maybe arrays should hold DOM nodes?
 // - once graph representation is figured out, adjust sorting algorithms
@@ -55,15 +53,23 @@ function quickSortDriver() {
 
 function quickSort(arr, start, end) {
   if (start < end) {
-    let mid = start + end / 2
-    partition(arr, (start + end) / 2); // partition
-    quickSort(arr, start, (start + end) / 2 - 1); // quicksort left
-    quickSort(arr, (start + end) / 2 + 1, end); // quicksort right
+    let partitionIndex = partition(arr, start, end);
+    quickSort(arr, start, partitionIndex - 1); // quicksort left
+    quickSort(arr, partitionIndex + 1, end); // quicksort right
   }
 }
 
-function partition(arr, pivotIndex) {
-
+function partition(arr, low, high) {
+  let pivot = arr[high];    // select pivot
+  let i = (low - 1);
+  for (let j = low; j < high; j++) {
+    if (arr[j] < pivot) {
+      i++;              // increment index of smaller element
+      swap(arr, i, j);
+    }
+  }
+  swap(arr, i + 1, high);
+  return (i + 1);
 }
 
 function mergeSortDriver() {
@@ -72,7 +78,7 @@ function mergeSortDriver() {
 
 function mergeSort(arr, start, end) {
   if (start < end) {
-    let mid = (start + end) / 2
+    let mid = Math.floor((start + end) / 2);
     mergeSort(arr, start, mid);
     mergeSort(arr, mid + 1, end);
     merge(arr, start, mid, end);
@@ -80,8 +86,44 @@ function mergeSort(arr, start, end) {
   return;
 }
 
-function merge() {
+function merge(arr, start, mid, end) {
+  // Create new arrays, copy values to them
+  let n1 = mid - start + 1;
+  let n2 = end - mid;
+  let left = new Array[n1];
+  let right = new Array[n2];
+  for (let i = 0; i < n1; i++)
+    left[i] = arr[start + i];
+  for (let i = 0; i < n2; i++)
+    right[i] = arr[mid + 1 + j];
 
+  // Merge the temp array back into arr
+  let i = 0;      // initial index of first subarray
+  let j = 0;      // initial index or second subarray
+  let k = start;  // initial index of merged subarray
+  while (i < n1 && j < n2) {
+    if (left[i] <= right[i]) {
+      arr[k] = left[i];
+      i++;
+    }
+    else {
+      arr[k] = right[j];
+      j++;
+    }
+    k++;
+  }
+
+  // Copy any remaining elements of remaining array
+  while (i < n1) {
+    arr[k] = left[i];
+    i++;
+    k++;
+  }
+  while (j < n2) {
+    arr[k] = right[j];
+    j++;
+    k++;
+  }
 }
 
 function heapSort() {
