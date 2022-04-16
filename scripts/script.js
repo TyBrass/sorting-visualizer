@@ -1,7 +1,9 @@
 "use strict"
 
-// - Write a toGraph() method that rebuilds the graph to reflect the current array
-// - once graph representation is figured out, adjust sorting algorithms
+// - adjust sorting algorithms
+//   - we have a sleep function that will wait the passed amount of time
+//   - need to figure out how to highlight elements currently being moved now
+//   - bubbleSort has an example of sleep() being used
 
 // ==== Set up page =================================================
 const arraySizeInput = document.querySelector('#array-size-input');
@@ -15,10 +17,6 @@ const graphContainer = document.querySelector('#graph');
 let arrayArray = [];  // Array representing the on-screen array
 
 newArrayBtn.addEventListener('click', function () {
-
-  while (graphContainer.firstChild)
-    graphContainer.removeChild(graphContainer.firstChild);
-
   arrayArray = [];
   for (let i = 0; i < arraySizeInput.value; i++)
     arrayArray.push(Math.floor(Math.random() * 600) + 1);
@@ -26,8 +24,7 @@ newArrayBtn.addEventListener('click', function () {
 });
 
 sortBtn.addEventListener('click', function () {
-  sortSelection = sortSelector.value;
-  switch (sortSelection) {
+  switch (sortSelector.value) {
     case "quick-sort":
       quickSortDriver();
       break;
@@ -52,6 +49,8 @@ sortBtn.addEventListener('click', function () {
 // note that most styling is done in styles.css, for class 'arrayElement'
 // for each element in arrayArray, add to the graph div, in order
 function arrayToGraph() {
+  while (graphContainer.firstChild)
+    graphContainer.removeChild(graphContainer.firstChild);
   for (let i = 0; i < arrayArray.length; i++) {
     let newElement = document.createElement('div');
     newElement.classList.add('arrayElement');
@@ -183,18 +182,30 @@ function insertionSort() {
   }
 }
 
-function bubbleSort() {
+async function bubbleSort() {
   for (let i = 0; i < arrayArray.length; i++) {
     for (let j = 1; j < arrayArray.length - i; j++) {
-      if (arrayArray[j - 1] > arrayArray[j])
+      if (arrayArray[j - 1] > arrayArray[j]) {
         swap(arrayArray, j, j - 1);
+        console.log('onda');
+        await sleep(1);         // sleep
+        arrayToGraph();         // run function
+      }
     }
   }
 }
 
 function swap(arr, index1, index2) {
-  temp = arr[index1];
+  let temp = arr[index1];
   arr[index1] = arr[index2];
   arr[index2] = temp;
 }
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // ==================================================================
+
+// Fire newArrayBtn event manually to start
+newArrayBtn.click();
