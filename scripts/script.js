@@ -10,11 +10,19 @@ const newArrayBtn = document.querySelector('#new-array-btn');
 const sortBtn = document.querySelector('#sort-btn');
 const graphContainer = document.querySelector('#graph');
 
+// Array contains integers, sorted by those values, and the value corresponds 
+// to the element's height in pixels (1-600 inclusive).
+let arrayArray = [];  // Array representing the on-screen array
+
 newArrayBtn.addEventListener('click', function () {
-  arraySize = arraySizeInput.value;
+
+  while (graphContainer.firstChild)
+    graphContainer.removeChild(graphContainer.firstChild);
+
   arrayArray = [];
-  for (let i = 0; i < size; i++)
+  for (let i = 0; i < arraySizeInput.value; i++)
     arrayArray.push(Math.floor(Math.random() * 600) + 1);
+  arrayToGraph();
 });
 
 sortBtn.addEventListener('click', function () {
@@ -37,21 +45,19 @@ sortBtn.addEventListener('click', function () {
       break;
   }
 });
-
-// Array contains integers, sorted by those values, and the value corresponds 
-// to the element's height in pixels (1-600 inclusive).
-let arrayArray = [];  // Array representing the on-screen array
 // ==================================================================
 
 
 // ==== DOM array elements ==========================================
 // note that most styling is done in styles.css, for class 'arrayElement'
-// creates an element, but doesn't add it to the graph or array
-function createArrayElement(size) {
-  let toReturn = document.createElement('div');
-  toReturn.classList.add('arrayElement');
-  toReturn.style.height = size;
-  toReturn;
+// for each element in arrayArray, add to the graph div, in order
+function arrayToGraph() {
+  for (let i = 0; i < arrayArray.length; i++) {
+    let newElement = document.createElement('div');
+    newElement.classList.add('arrayElement');
+    newElement.style.height = `${arrayArray[i]}px`;
+    graphContainer.appendChild(newElement);
+  }
 }
 // ==================================================================
 
