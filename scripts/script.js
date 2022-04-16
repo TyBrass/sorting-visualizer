@@ -173,12 +173,19 @@ function heapify(arr, n, i) {
 
 }
 
-function insertionSort() {
-  let j = 0;
-  for (let i = 0; i < arrayArray.length; i++) {
-    j = i;
-    while (j > 0 && arrayArray[j] < arrayArray[j - 1])
-      swap(arrayArray, j, j - 1);
+async function insertionSort() {
+  let j;
+  let key;
+  for (let i = 1; i < arrayArray.length; i++) {
+    key = arrayArray[i];
+    j = i - 1;
+    while (j >= 0 && arrayArray[j] > key) {
+      arrayArray[j + 1] = arrayArray[j];
+      j = j - 1;
+      await sleep(1);
+      arrayToGraph();
+    }
+    arrayArray[j + 1] = key;
   }
 }
 
@@ -188,8 +195,8 @@ async function bubbleSort() {
       if (arrayArray[j - 1] > arrayArray[j]) {
         swap(arrayArray, j, j - 1);
         console.log('onda');
-        await sleep(1);         // sleep
-        arrayToGraph();         // run function
+        await sleep(1);
+        arrayToGraph();
       }
     }
   }
