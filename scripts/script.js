@@ -1,7 +1,6 @@
 "use strict"
 
-// - how do we show the array? how do we show the sorting process?
-//   - maybe arrays should hold DOM nodes?
+// - Write a toGraph() method that rebuilds the graph to reflect the current array
 // - once graph representation is figured out, adjust sorting algorithms
 
 // ==== Set up page =================================================
@@ -44,6 +43,16 @@ sortBtn.addEventListener('click', function () {
 let arrayArray = [];  // Array representing the on-screen array
 // ==================================================================
 
+
+// ==== DOM array elements ==========================================
+// note that most styling is done in styles.css, for class 'arrayElement'
+// creates an element, but doesn't add it to the graph or array
+function createArrayElement(size) {
+  let toReturn = document.createElement('div');
+  toReturn.classList.add('arrayElement');
+  toReturn.style.height = size;
+  toReturn;
+}
 // ==================================================================
 
 // ==== Sorting methods and helpers =================================

@@ -100,3 +100,12 @@ button {
   justify-content: center;
 }
 /*===============================================*/
+
+/* Array Elements */
+.arrayElement {
+  background-color: blueviolet;
+  margin-left: 2px;
+  color: transparent;
+  font-size: 2rem;
+  flex: auto;
+}
