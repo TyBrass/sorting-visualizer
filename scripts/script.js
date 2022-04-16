@@ -1,9 +1,8 @@
 "use strict"
 
-// - adjust sorting algorithms
-//   - we have a sleep function that will wait the passed amount of time
-//   - need to figure out how to highlight elements currently being moved now
-//   - bubbleSort has an example of sleep() being used
+// - merge and mergeSort are screwed up right now, not just due to async issues
+// - merge and quick don't work well with async and sleep()
+// - need to figure out how to highlight elements currently being moved now
 
 // ==== Set up page =================================================
 const arraySizeInput = document.querySelector('#array-size-input');
@@ -63,6 +62,8 @@ function arrayToGraph() {
 // ==== Sorting methods and helpers =================================
 function quickSortDriver() {
   quickSort(arrayArray, 0, arrayArray.length - 1);
+  arrayToGraph();
+  console.log(arrayArray);
 }
 
 function quickSort(arr, start, end) {
@@ -80,6 +81,7 @@ function partition(arr, low, high) {
     if (arr[j] < pivot) {
       i++;              // increment index of smaller element
       swap(arr, i, j);
+      arrayToGraph();
     }
   }
   swap(arr, i + 1, high);
@@ -88,28 +90,29 @@ function partition(arr, low, high) {
 
 function mergeSortDriver() {
   mergeSort(arrayArray, 0, arrayArray.length - 1);
+  arrayToGraph();
+  console.log(arrayArray);
 }
 
 function mergeSort(arr, start, end) {
-  if (start < end) {
-    let mid = Math.floor((start + end) / 2);
-    mergeSort(arr, start, mid);
-    mergeSort(arr, mid + 1, end);
-    merge(arr, start, mid, end);
-  }
-  return;
+  if (start >= end)
+    return;
+  let mid = Math.floor((start + end) / 2);
+  mergeSort(arr, start, mid);
+  mergeSort(arr, mid + 1, end);
+  merge(arr, start, mid, end);
 }
 
 function merge(arr, start, mid, end) {
   // Create new arrays, copy values to them
   let n1 = mid - start + 1;
   let n2 = end - mid;
-  let left = new Array[n1];
-  let right = new Array[n2];
+  let left = new Array(n1);
+  let right = new Array(n2);
   for (let i = 0; i < n1; i++)
     left[i] = arr[start + i];
   for (let i = 0; i < n2; i++)
-    right[i] = arr[mid + 1 + j];
+    right[i] = arr[mid + 1 + i];
 
   // Merge the temp array back into arr
   let i = 0;      // initial index of first subarray
@@ -140,21 +143,23 @@ function merge(arr, start, mid, end) {
   }
 }
 
-function heapSort() {
+async function heapSort() {
   let n = arrayArray.length;
 
   // Heapify (alters original array)
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--)
-    heapify(arr, n, i);
+    heapify(arrayArray, n, i);
 
   // Extract elements from heap, moving current node to the end
   for (let i = n - 1; i > 0; i--) {
     swap(arrayArray, i, 0);
-    heapify(arr, i, 0);
+    heapify(arrayArray, i, 0);
+    await sleep(2);
+    arrayToGraph();
   }
 }
 
-function heapify(arr, n, i) {
+async function heapify(arr, n, i) {
   let largest = i;
   let leftChild = i * 2 + 1;
   let rightChild = i * 2 + 2;
@@ -170,7 +175,8 @@ function heapify(arr, n, i) {
     swap(arr, i, largest);
     heapify(arr, n, largest);
   }
-
+  await sleep(2);
+  arrayToGraph();
 }
 
 async function insertionSort() {
@@ -182,7 +188,7 @@ async function insertionSort() {
     while (j >= 0 && arrayArray[j] > key) {
       arrayArray[j + 1] = arrayArray[j];
       j = j - 1;
-      await sleep(1);
+      await sleep(2);
       arrayToGraph();
     }
     arrayArray[j + 1] = key;
@@ -194,8 +200,7 @@ async function bubbleSort() {
     for (let j = 1; j < arrayArray.length - i; j++) {
       if (arrayArray[j - 1] > arrayArray[j]) {
         swap(arrayArray, j, j - 1);
-        console.log('onda');
-        await sleep(1);
+        await sleep(2);
         arrayToGraph();
       }
     }
