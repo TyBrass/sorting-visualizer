@@ -5,14 +5,38 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="scripts/script.js" defer></script>
   <title>Sorting Algorithm Visualizer</title>
 </head>
 <body>
-  <div id="navbar">
-    <div id="header"></div>
-    <div id="options"></div>
-    <div id="links"></div>
+  <div id="nav-bar">
+    <div id="header">
+      <h1>Sorting Algorithm Visualizer</h1>
+    </div>
+    <div id="options">
+      <form>
+        <label>Array Size</label>
+        <div id="array-size">
+          <a><p class="arrow" id="arrow-left"></p></a>
+          <input id="array-size-text" type="number">
+          <a><p class="arrow" id="arrow-right"></p></a>
+        </div>
+      </form>
+      <form>
+        <label>Sort Selector</label>
+        <select name="sort-select">
+          <option value="quick-sort">Quick Sort</option>
+          <option value="merge-sort">Merge Sort</option>
+          <option value="heap-sort">Heap Sort</option>
+          <option value="insertion-sort">Insertion Sort</option>
+        </select>
+      </form>
+    </div>
+    <div id="links">
+      <a href="#" class="fa fa-github fa-2x"></a>
+      <a href="#" class="fa fa-linkedin"></a>
+    </div>
   </div>
   <div id="main"></div>
 </body>
