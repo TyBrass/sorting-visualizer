@@ -45,6 +45,10 @@ label {
   max-width: 4rem;
 }
 
+#new-array-btn {
+  height: 80px;
+}
+
 #links {
   display: flex;
   flex: 1 1 auto;
@@ -88,5 +92,9 @@ label {
   background-color: #0077b5;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
 }
 /*===============================================*/
