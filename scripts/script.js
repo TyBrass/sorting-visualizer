@@ -3,6 +3,8 @@
 // - merge and mergeSort are screwed up right now, not just due to async issues
 // - merge and quick don't work well with async and sleep()
 // - need to figure out how to highlight elements currently being moved now
+// - make buttons unselectable while a sort is ongoing. There are some things in the 
+//   anon functions, but because the sorts are asyncs, they don't work right
 
 // ==== Set up page =================================================
 const arraySizeInput = document.querySelector('#array-size-input');
@@ -23,6 +25,7 @@ newArrayBtn.addEventListener('click', function () {
 });
 
 sortBtn.addEventListener('click', function () {
+  disableButtons();
   switch (sortSelector.value) {
     case "quick-sort":
       quickSortDriver();
@@ -40,6 +43,7 @@ sortBtn.addEventListener('click', function () {
       bubbleSort();
       break;
   }
+  enableButtons();
 });
 // ==================================================================
 
@@ -219,5 +223,18 @@ function sleep(ms) {
 
 // ==================================================================
 
+function disableButtons() {
+  console.log("Running");
+  newArrayBtn.classList.add('disabled');
+  sortBtn.classList.add('disabled');
+}
+
+function enableButtons() {
+  newArrayBtn.classList.remove('disabled');
+  sortBtn.classList.remove('disabled');
+}
+
 // Fire newArrayBtn event manually to start
 newArrayBtn.click();
+
+
