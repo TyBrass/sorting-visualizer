@@ -42,11 +42,13 @@ label {
 }
 
 #array-size-input {
-  max-width: 4rem;
+  max-width: 3rem;
+  min-width: 3rem;
 }
 
-#new-array-btn {
+button {
   height: 80px;
+  width: 80px;
 }
 
 #links {
