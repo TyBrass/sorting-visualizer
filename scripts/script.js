@@ -28,10 +28,10 @@ sortBtn.addEventListener('click', function () {
   disableButtons();
   switch (sortSelector.value) {
     case "quick-sort":
-      quickSortDriver();
+      quickSort(arrayArray, 0, arrayArray.length - 1);
       break;
     case "merge-sort":
-      mergeSortDriver();
+      mergeSort(arrayArray, arrayArray.length);
       break;
     case "heap-sort":
       heapSort();
@@ -64,84 +64,103 @@ function arrayToGraph() {
 // ==================================================================
 
 // ==== Sorting methods and helpers =================================
-function quickSortDriver() {
-  quickSort(arrayArray, 0, arrayArray.length - 1);
+function quickSort(arr, start, end) {
+  let stack = new Array(end - start + 1);
+  stack.fill(0);
+  let top = -1;
+  stack[++top] = start;
+  stack[++top] = end;
+
+  while (top >= 0) {
+    end = stack[top--];
+    start = stack[top--];
+    let p = partition(arr, start, end);
+    if (p - 1 > end) {
+      stack[++top] = start;
+      stack[++top] = p - 1;
+    }
+    if (p + 1 < end) {
+      stack[++top] = p + 1;
+      stack[++top] = end;
+    }
+  }
   arrayToGraph();
   console.log(arrayArray);
 }
 
-function quickSort(arr, start, end) {
-  if (start < end) {
-    let partitionIndex = partition(arr, start, end);
-    quickSort(arr, start, partitionIndex - 1); // quicksort left
-    quickSort(arr, partitionIndex + 1, end); // quicksort right
-  }
-}
-
 function partition(arr, low, high) {
-  let pivot = arr[high];    // select pivot
+  let pivot = arr[high];
   let i = (low - 1);
-  for (let j = low; j < high; j++) {
-    if (arr[j] < pivot) {
-      i++;              // increment index of smaller element
+  for (let j = low; j<= high - 1; j++) {
+    if (arr[j] <= pivot) {
+      i++;
       swap(arr, i, j);
       arrayToGraph();
     }
   }
-  swap(arr, i + 1, high);
-  return (i + 1);
-}
-
-function mergeSortDriver() {
-  mergeSort(arrayArray, 0, arrayArray.length - 1);
+  swap(arr, i+1, high);
   arrayToGraph();
-  console.log(arrayArray);
+  return i + 1;
 }
 
-function mergeSort(arr, start, end) {
-  if (start >= end)
-    return;
-  let mid = Math.floor((start + end) / 2);
-  mergeSort(arr, start, mid);
-  mergeSort(arr, mid + 1, end);
-  merge(arr, start, mid, end);
+async function mergeSort(arr, n) {
+  let currSize;
+  let leftStart;
+  for (currSize = 1; currSize <= n - 1; currSize = 2 * currSize) {
+    for (leftStart = 0; leftStart < n - 1; leftStart += 2 * currSize) {
+      let mid = Math.min(leftStart + currSize - 1, n - 1);
+      let rightEnd = Math.min(leftStart + 2 * currSize - 1, n - 1);
+      await sleep(2);
+      arrayToGraph();
+      merge(arr, leftStart, mid, rightEnd);
+    }
+  }
+  await sleep(2);
+  arrayToGraph();
 }
 
 function merge(arr, start, mid, end) {
-  // Create new arrays, copy values to them
+  let i;
+  let j;
+  let k;
   let n1 = mid - start + 1;
   let n2 = end - mid;
-  let left = new Array(n1);
-  let right = new Array(n2);
-  for (let i = 0; i < n1; i++)
-    left[i] = arr[start + i];
-  for (let i = 0; i < n2; i++)
-    right[i] = arr[mid + 1 + i];
+  let leftArr = Array(n1).fill(0);
+  let rightArr = Array(n2).fill(0);
 
-  // Merge the temp array back into arr
-  let i = 0;      // initial index of first subarray
-  let j = 0;      // initial index or second subarray
-  let k = start;  // initial index of merged subarray
+  for (i = 0; i < n1; i++)
+    leftArr[i] = arr[start + i];
+    arrayToGraph();
+  for (j = 0; j < n2; j++)
+    rightArr[j] = arr[mid + 1 + j];
+    arrayToGraph();
+
+  i = 0;
+  j = 0;
+  k = start;
   while (i < n1 && j < n2) {
-    if (left[i] <= right[i]) {
-      arr[k] = left[i];
+    if (leftArr[i] <= rightArr[j]) {
+      arr[k] = leftArr[i];
+      arrayToGraph();
       i++;
-    }
-    else {
-      arr[k] = right[j];
+    } else {
+      arr[k] = rightArr[j];
+      arrayToGraph();
       j++;
     }
     k++;
   }
 
-  // Copy any remaining elements of remaining array
   while (i < n1) {
-    arr[k] = left[i];
+    arr[k] = leftArr[i];
+    arrayToGraph();
     i++;
     k++;
   }
+
   while (j < n2) {
-    arr[k] = right[j];
+    arr[k] = rightArr[j];
+    arrayToGraph();
     j++;
     k++;
   }
